@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-# this scrips displays all listening sockets and programs they belong to
-netstat -l --program
