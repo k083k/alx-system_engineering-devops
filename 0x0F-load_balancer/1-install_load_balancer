@@ -6,8 +6,8 @@ sudo apt -y install haproxy
 
 FILE="/etc/haproxy/haproxy.cfg"
 
-server_1="3.238.50.50.205"
-server_2="18.204.2.131"
+server_1="44.200.80.123"
+server_2="3.238.50.205"
 
 FRONTEND="\nfrontend LBfrontend\n\tbind *:80\n\tdefault_backend servers\n"
 BACKEND="\nbackend servers\n\tbalance roundrobin\n\tserver server_1 $server_1\n\tserver server_2 $server_2\n"
