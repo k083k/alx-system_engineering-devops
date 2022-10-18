@@ -1,23 +1,24 @@
 #!/usr/bin/python3
-"""uses the JSONPlaceholder api to query data about an employee"""
-
-from requests import get
-from sys import argv
+"""gathers data from an API"""
 
 
 if __name__ == "__main__":
-    main_url = "https://jsonplaceholder.typicode.com"
-    todo_url = main_url + "/user/{}/todos".format(argv[1])
-    name_url = main_url + "/users/{}".format(argv[1])
-    todo_result = get(todo_url).json()
-    name_result = get(name_url).json()
+    import requests
+    import sys
 
-    todo_num = len(todo_result)
-    todo_complete = len([todo for todo in todo_result
-                        if todo.get("completed")])
-    name = name_result.get("name")
-    print("Employee {} is done with tasks({}/{}):".format(
-            name, todo_complete, todo_num))
-    for todo in todo_result:
-        if (todo.get("completed")):
-            print("\t {}".format(todo.get("title")))
+    user_req = requests.get("https://jsonplaceholder.typicode.com/users/{}".
+                            format(sys.argv[1]))
+    user_name = user_req.json().get("name")
+    tasks_req = requests.get("https://jsonplaceholder.typicode.com/todos")
+    total_tasks = 0
+    cmp_tasks = 0
+    cmp_tasks_desc = ""
+    for each in tasks_req.json():
+        if each["userId"] == int(sys.argv[1]):
+            total_tasks += 1
+            if each["completed"] is True:
+                cmp_tasks += 1
+                cmp_tasks_desc += "\t {}\n".format(each["title"])
+    print("Employee {} is done with tasks({}/{}):".
+          format(user_name, cmp_tasks, total_tasks))
+    print(cmp_tasks_desc, end="")
